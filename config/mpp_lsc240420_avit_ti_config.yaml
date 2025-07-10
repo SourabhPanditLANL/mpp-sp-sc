@@ -29,8 +29,12 @@ basic_config: &basic_config
   warmup_steps: 1000 # Warmup when not using DAdapt
   learning_rate: -1 # -1 means use DAdapt
   weight_decay: 1e-3
-  n_states: 5   # Number of state variables across the datasets - Can be larger than real number and things will just go unused
-  state_names: ['Pressure', 'Vx', 'Vy', 'Density',  'Vx', 'Vy', 'Density', 'Pressure'] # Should be sorted
+  n_states: 9   # Number of state variables across the datasets - Can be larger than real number and things will just go unused
+  state_names: [
+  'Uvelocity', 'Wvelocity', 'av_density',
+  'density_case', 'density_cushion', 'density_maincharge',
+  'density_outside_air', 'density_striker', 'density_throw'
+  ]
   dt: 1 # Striding of data - Not currently implemented > 1
   n_steps: 16 # Length of history to include in input
   enforce_max_steps: !!bool False # If false and n_steps > dataset steps, use dataset steps. Otherwise, raise Exception.
@@ -44,7 +48,7 @@ basic_config: &basic_config
   embed_dim: 192 # Dimension of internal representation - 192/384/768/1024 for Ti/S/B/L
   num_heads: 3 # Number of heads for attention - 3/6/12/16 for Ti/S/B/L
   processor_blocks: 12 # Number of transformer blocks in the backbone - 12/12/12/24 for Ti/S/B/L
-  patch_size: [16, 16] # Actually currently hardcoded at 16
+  patch_size: [4, 4] # Actually currently hardcoded at 16
   bias_type: 'rel'  # Options rel, continuous, none
   # Data settings
   train_val_test: [.8, .1, .1]
@@ -54,10 +58,10 @@ basic_config: &basic_config
   extended_names: !!bool False # Whether to use extended names - not currently implemented
   embedding_offset: 0  # Use when adding extra finetuning fields
   train_data_paths: [
-              ['/lustre/scratch5/exempt/artimis/data/mpp_lsc240420_hdf5', 'lsc240420', ''],
+              ['/Users/spandit/proj/MPP/lsc240420-2-hdf5/LSC_HDF5', 'lsc240420', ''],
               ]
   valid_data_paths: [
-              ['/lustre/scratch5/exempt/artimis/data/mpp_lsc240420_hdf5', 'lsc240420', ''],
+              ['/Users/spandit/proj/MPP/lsc240420-2-hdf5/LSC_HDF5', 'lsc240420', ''],
               ]
   append_datasets: [] # List of datasets to append to the input/output projections for finetuning
 
